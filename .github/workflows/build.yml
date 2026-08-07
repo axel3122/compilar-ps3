@@ -18,17 +18,27 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential git cmake autoconf automake libtool pkg-config zlib1g-dev libssl-dev python3 python3-pip wget curl bison flex texinfo gawk libgmp-dev libelf-dev libncurses-dev libmpfr-dev libmpc-dev
 
+      - name: Prepare PS3DEV Directory
+        run: |
+          sudo mkdir -p /usr/local/ps3dev
+          sudo chown -R $USER /usr/local/ps3dev
+
       - name: Build Toolchain
+        env:
+          PS3DEV: /usr/local/ps3dev
+          PSL1GHT: /usr/local/ps3dev/psl1ght
+          PATH: /usr/local/ps3dev/bin:/usr/local/ps3dev/ppu/bin:/usr/local/ps3dev/spu/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
         run: |
           git clone https://github.com/ps3dev/ps3toolchain.git
           cd ps3toolchain
           ./toolchain.sh
 
       - name: Compress result
-        run: tar -czvf ps3dev.tar.gz /usr/local/ps3dev
+        run: tar -czvf ps3dev.tar.gz -C /usr/local ps3dev
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ps3dev
           path: ps3dev.tar.gz
+          
