@@ -16,7 +16,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential git cmake autoconf automake libtool pkg-config zlib1g-dev libssl-dev python3 python3-pip wget curl bison flex texinfo gawk libgmp-dev libelf-dev libncurses-dev libmpfr-dev libmpc-dev
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            build-essential git cmake autoconf automake libtool pkg-config \
+            zlib1g-dev libssl-dev python3 python3-pip wget curl bison flex \
+            texinfo gawk libgmp-dev libelf-dev libncurses-dev libmpfr-dev \
+            libmpc-dev patch bzip2 xz-utils make gcc g++
 
       - name: Prepare PS3DEV Directory
         run: |
@@ -41,4 +45,3 @@ jobs:
         with:
           name: ps3dev
           path: ps3dev.tar.gz
-          
